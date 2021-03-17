@@ -23,6 +23,8 @@ interface IItem {
     availability: number
   }
   description: string
-  photo: string
+  photo: string | null
   category_id: string
 }
+
+export type IFilterItems = (categoryId: string) => Array<IItem>

@@ -1,5 +1,12 @@
 <template>
-  <h1>App</h1>
+  <div id="navbar">
+    <font-awesome-icon
+      icon="arrow-left"
+      size="2x"
+      :style="{ color: '#050505', cursor: 'pointer' }"
+    />
+  </div>
+  <router-view />
 </template>
 
 <script lang="ts">
@@ -21,7 +28,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-h1 {
-  font-size: 50px;
+#navbar {
+  width: 100%;
+  padding: 60px 25px 0;
 }
 </style>

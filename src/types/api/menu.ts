@@ -9,7 +9,7 @@ interface ICategorie {
   url: string
 }
 
-interface IItem {
+export interface IItem {
   id: string
   name: string
   url: string

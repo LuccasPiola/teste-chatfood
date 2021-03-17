@@ -40,6 +40,20 @@ const menuModule: Module<IMenuState, Record<string, unknown>> = {
       }
     },
   },
+  getters: {
+    isLoading: state => {
+      return state.isLoading
+    },
+    hasError: state => {
+      return state.hasError
+    },
+    data: state => {
+      return state.data
+    },
+    itemsInCategory: state => (categoryId: string) => {
+      return state.data?.items.filter(item => item.category_id === categoryId)
+    },
+  },
 }
 
 export default menuModule
