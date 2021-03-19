@@ -1,29 +1,34 @@
 <template>
-  <div id="menu" v-if="menu">
+  <div id="menu" v-if="filteredItemsSeparatedByCategory.length">
     <h1>Search</h1>
     <CustomInput v-model="inputValue" />
-    <section v-for="categorie in menu.categories" :key="categorie.id">
+    <section v-for="categorie in availableCategories" :key="categorie.id">
       <h2>{{ categorie.name }}</h2>
       <Dish
-        v-for="item in itemsInCategory(categorie.id)"
+        v-for="item in filteredItemsSeparatedByCategory[categorie.id - 1]"
         :key="item.id"
-        :name="item.name"
-        :description="item.description"
-        :discount-rate="item.discount_rate"
-        :price="item.price"
-        :photo="item.photo"
+        :dish="item"
       />
     </section>
+    <h2 id="menu__no-items" v-if="!availableCategories.length">
+      No results...
+    </h2>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, computed } from 'vue'
+import { defineComponent, reactive, toRefs, computed, watch } from 'vue'
 import { useStore } from 'vuex'
+
+import { IItem, ICategorie } from '@/types/store/menu'
+import { IHomeState } from '@/types/views/Home'
+
 import CustomInput from '@/components/CustomInput.vue'
 import Dish from '@/components/Dish.vue'
-import IMenuAPI from '@/types/api/menu'
-import { IFilterItems } from '@/types/store/menu'
+import {
+  getAvailableCategories,
+  getItemsSeparatedByCategories,
+} from '@/helpers/menu'
 
 export default defineComponent({
   name: 'Home',
@@ -32,22 +37,57 @@ export default defineComponent({
     Dish,
   },
   setup() {
-    const state = reactive({
-      inputValue: '',
-    })
     const store = useStore()
-    const menu = computed<IMenuAPI>(() => store.getters['menu/data'])
-    const itemsInCategory = computed<IFilterItems>(
-      () => store.getters['menu/itemsInCategory'],
+    const categories = computed<ICategorie[]>(
+      () => store.getters['menu/categories'],
     )
-    setTimeout(() => {
-      console.log(itemsInCategory.value('1'))
-    }, 1000)
+    const items = computed<IItem[]>(() => store.getters['menu/items'])
+
+    const state = reactive<IHomeState>({
+      inputValue: '',
+      filteredItems: [],
+    })
+
+    const filteredItemsSeparatedByCategory = computed(() =>
+      getItemsSeparatedByCategories({
+        forThisCategories: categories.value,
+        andItems: state.filteredItems,
+      }),
+    )
+
+    const availableCategories = computed(() =>
+      getAvailableCategories({
+        forThisCategories: categories.value,
+        andItems: state.filteredItems,
+      }),
+    )
+
+    // The only reason for this watch is because the items variable value is asynchronous
+    watch(
+      () => items.value,
+      newValue => {
+        if (!state.filteredItems.length) state.filteredItems = newValue
+      },
+    )
+
+    // This watches the input. This way, the user don't need to press enter to search
+    watch(
+      () => state.inputValue,
+      (newValue, oldValue) => {
+        if (newValue !== oldValue) {
+          state.filteredItems = newValue.length
+            ? items.value.filter(item =>
+                item.name.toLowerCase().includes(newValue.toLowerCase()),
+              )
+            : items.value
+        }
+      },
+    )
 
     return {
       ...toRefs(state),
-      menu,
-      itemsInCategory,
+      availableCategories,
+      filteredItemsSeparatedByCategory,
     }
   },
 })
@@ -68,6 +108,10 @@ export default defineComponent({
     color: #071c4d;
     font-weight: 600;
     margin: 21px 0;
+  }
+
+  &__no-items {
+    margin-top: 28px;
   }
 }
 </style>

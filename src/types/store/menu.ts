@@ -7,13 +7,13 @@ export default interface IMenuState {
   hasError: boolean
 }
 
-interface ICategorie {
+export interface ICategorie {
   id: string
   name: string
   url: string
 }
 
-interface IItem {
+export interface IItem {
   id: string
   name: string
   url: string
@@ -26,5 +26,3 @@ interface IItem {
   photo: string | null
   category_id: string
 }
-
-export type IFilterItems = (categoryId: string) => Array<IItem>

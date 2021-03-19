@@ -19,7 +19,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     function handleInput(e: { target: HTMLInputElement }) {
-      emit('update:modelValue', e.target.value)
+      emit('update:modelValue', e.target.value) // Vue Composition API new event to use v-model on custom component
     }
 
     return {

@@ -1,44 +1,65 @@
 <template>
   <div class="dish">
-    <div class="dish__info">
-      <h3>{{ name }}</h3>
-      <p>{{ description }}</p>
+    <div class="dish__info" :style="{ width: dish.photo ? '70%' : '100%' }">
+      <h3>{{ dish.name }}</h3>
+      <p>{{ dish.description }}</p>
       <div>
-        <strong>AED {{ price }}</strong>
-        <h4>AED 15.20</h4>
+        <strong>{{
+          dish.discount_rate ? formattedDiscountPrice : formattedOriginalPrice
+        }}</strong>
+        <h4 v-if="dish.discount_rate">{{ formattedOriginalPrice }}</h4>
       </div>
     </div>
     <div
+      v-if="dish.photo"
       class="dish__photo"
       :style="{
-        backgroundImage: `url('${photo}')`,
+        backgroundImage: `url('${dish.photo}')`,
       }"
     ></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { IItem } from '@/types/store/menu'
+import { transformNumberIntoMoney } from '@/helpers/money'
+
 export default defineComponent({
   name: 'Dish',
+  setup(props) {
+    const formattedOriginalPrice = computed(() =>
+      transformNumberIntoMoney({
+        number: props.dish.price,
+        withLocale: 'ae',
+        andStyle: {
+          style: 'currency',
+          currency: 'AED',
+          maximumFractionDigits: 0,
+        },
+      }),
+    )
+
+    const formattedDiscountPrice = computed(() =>
+      transformNumberIntoMoney({
+        number: props.dish.price * (1 - props.dish.discount_rate),
+        withLocale: 'ae',
+        andStyle: {
+          style: 'currency',
+          currency: 'AED',
+          maximumFractionDigits: 0,
+        },
+      }),
+    )
+
+    return {
+      formattedOriginalPrice,
+      formattedDiscountPrice,
+    }
+  },
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    photo: {
-      type: [String],
-      default: '',
-    },
-    discountRate: {
-      type: Number,
+    dish: {
+      type: Object as () => IItem, // I can only infeer an interface as a prop type with this trick
       required: true,
     },
   },
@@ -52,7 +73,6 @@ export default defineComponent({
   padding: 21px 0;
 
   &__info {
-    width: 70%;
     h3 {
       color: #071c4d;
       font-weight: 600;
@@ -86,8 +106,9 @@ export default defineComponent({
     height: 91px;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     border-radius: 7px;
-    margin-left: 7px;
+    margin-left: 14px;
   }
 
   & + .dish {

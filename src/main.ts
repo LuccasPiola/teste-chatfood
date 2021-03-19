@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import config from '@/config'
+import doInitialConfiguration from '@/config'
 
-config()
+doInitialConfiguration()
 
 const app = createApp(App)
 

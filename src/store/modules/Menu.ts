@@ -1,8 +1,12 @@
 import { Module } from 'vuex'
-import menuAPI from '@/services/api'
+import menuAPI from '@/services/api/menu/methods'
 import IMenuState from '@/types/store/menu'
 import IMenuAPI from '@/types/api/menu'
 
+/*
+ * Here, Module has two params: The state type and the root state type.
+ * As the root state is empty, the most correct way to type that is to say Record<string, unknown>
+ * */
 const menuModule: Module<IMenuState, Record<string, unknown>> = {
   namespaced: true,
   state: {
@@ -47,11 +51,13 @@ const menuModule: Module<IMenuState, Record<string, unknown>> = {
     hasError: state => {
       return state.hasError
     },
-    data: state => {
-      return state.data
+    categories: state => {
+      if (!state?.data) return []
+      return state.data.categories
     },
-    itemsInCategory: state => (categoryId: string) => {
-      return state.data?.items.filter(item => item.category_id === categoryId)
+    items: state => {
+      if (!state?.data) return []
+      return state.data.items
     },
   },
 }

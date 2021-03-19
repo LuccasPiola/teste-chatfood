@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
-import menuAPI from './menu'
-import IMenuAPI from '../../types/api/menu'
+import menuAPI from '.'
+import IMenuAPI from '@/types/api/menu'
 
 export default {
   getMenu: (): Promise<AxiosResponse<IMenuAPI>> =>
