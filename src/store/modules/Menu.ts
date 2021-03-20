@@ -43,6 +43,10 @@ const menuModule: Module<IMenuState, Record<string, unknown>> = {
         commit('SET_ERROR')
       }
     },
+    reset({ commit, dispatch }) {
+      commit('RESET_MENU')
+      dispatch('fetchMenu')
+    },
   },
   getters: {
     isLoading: state => {

@@ -1,7 +1,7 @@
 <template>
-  <div id="menu" v-if="filteredItemsSeparatedByCategory.length">
+  <div class="menu" v-if="filteredItemsSeparatedByCategory.length">
     <h1>Search</h1>
-    <CustomInput v-model="inputValue" />
+    <CustomInput v-model="inputValue" data-test="input" />
     <section v-for="categorie in availableCategories" :key="categorie.id">
       <h2>{{ categorie.name }}</h2>
       <Dish
@@ -10,8 +10,22 @@
         :dish="item"
       />
     </section>
-    <h2 id="menu__no-items" v-if="!availableCategories.length">
+    <h2 class="menu__no-items" v-if="!availableCategories.length">
       No results...
+    </h2>
+  </div>
+  <div class="menu" v-if="apiHasError">
+    <h1>Search</h1>
+    <h2 class="menu__error">
+      Error in API. <br />
+      Click in the arrow.
+    </h2>
+  </div>
+  <div class="menu" v-if="apiIsLoading">
+    <h1>Search</h1>
+    <h2 class="menu__loading">
+      Loading API. <br />
+      Please wait...
     </h2>
   </div>
 </template>
@@ -42,6 +56,10 @@ export default defineComponent({
       () => store.getters['menu/categories'],
     )
     const items = computed<IItem[]>(() => store.getters['menu/items'])
+    const apiHasError = computed<boolean>(() => store.getters['menu/hasError'])
+    const apiIsLoading = computed<boolean>(
+      () => store.getters['menu/isLoading'],
+    )
 
     const state = reactive<IHomeState>({
       inputValue: '',
@@ -73,14 +91,12 @@ export default defineComponent({
     // This watches the input. This way, the user don't need to press enter to search
     watch(
       () => state.inputValue,
-      (newValue, oldValue) => {
-        if (newValue !== oldValue) {
-          state.filteredItems = newValue.length
-            ? items.value.filter(item =>
-                item.name.toLowerCase().includes(newValue.toLowerCase()),
-              )
-            : items.value
-        }
+      newValue => {
+        state.filteredItems = newValue.length
+          ? items.value.filter(item =>
+              item.name.toLowerCase().includes(newValue.toLowerCase()),
+            )
+          : items.value
       },
     )
 
@@ -88,13 +104,15 @@ export default defineComponent({
       ...toRefs(state),
       availableCategories,
       filteredItemsSeparatedByCategory,
+      apiHasError,
+      apiIsLoading,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-#menu {
+.menu {
   padding: 0 25px 60px;
   margin-top: 28px;
 
@@ -112,6 +130,17 @@ export default defineComponent({
 
   &__no-items {
     margin-top: 28px;
+  }
+
+  &__error {
+    margin-top: 28px !important;
+    font-size: 20px !important;
+    color: darkred !important;
+  }
+
+  &__loading {
+    margin-top: 28px !important;
+    font-size: 20px !important;
   }
 }
 </style>

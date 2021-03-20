@@ -5,6 +5,7 @@ interface IProps {
     style: string
     currency: string
     maximumFractionDigits?: number
+    minimumFractionDigits?: number
   }
 }
 
@@ -13,6 +14,6 @@ export const transformNumberIntoMoney = ({
   withLocale,
   andStyle,
 }: IProps): string => {
-  const intlNumber = new Intl.NumberFormat(withLocale, { ...andStyle })
+  const intlNumber = new Intl.NumberFormat(withLocale, andStyle)
   return intlNumber.format(number)
 }

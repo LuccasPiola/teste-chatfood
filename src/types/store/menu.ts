@@ -19,7 +19,7 @@ export interface IItem {
   url: string
   price: number
   discount_rate: number
-  stock: {
+  stock?: {
     availability: number
   }
   description: string

@@ -4,6 +4,7 @@
       icon="arrow-left"
       size="2x"
       :style="{ color: '#050505', cursor: 'pointer' }"
+      @click="resetState"
     />
   </div>
   <router-view />
@@ -22,7 +23,26 @@ export default defineComponent({
       await store.dispatch('menu/fetchMenu')
     }
 
-    onMounted(getMenuFromAPI)
+    async function resetState() {
+      await store.dispatch('menu/reset')
+      localStorage.setItem('@chatfood/basket', JSON.stringify([]))
+    }
+
+    function setLocalStorageBasket() {
+      const basketExistsInLocalStore = localStorage.getItem('@chatfood/basket')
+      if (!basketExistsInLocalStore) {
+        localStorage.setItem('@chatfood/basket', JSON.stringify([]))
+      }
+    }
+
+    onMounted(() => {
+      getMenuFromAPI()
+      setLocalStorageBasket()
+    })
+
+    return {
+      resetState,
+    }
   },
 })
 </script>

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "1",
+    "name": "name test",
+    "url": "url test",
+    "price": 100,
+    "discount_rate": 0.1,
+    "stock": {
+      "availability": 2
+    },
+    "description": "description test",
+    "photo": null,
+    "category_id": "1"
+  },
+  {
+    "id": "2",
+    "name": "name test",
+    "url": "url test",
+    "price": 100,
+    "discount_rate": 0,
+    "description": "description test",
+    "photo": "photo test",
+    "category_id": "1"
+  }
+]
