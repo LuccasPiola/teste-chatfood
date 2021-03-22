@@ -134,6 +134,10 @@ export default defineComponent({
       width: 100%;
     }
 
+    @include sm {
+      width: 75%;
+    }
+
     @include md {
       width: 80%;
       h3 {

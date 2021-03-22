@@ -3,5 +3,4 @@ module.exports = {
   transform: {
     '^.+\\.vue$': 'vue-jest',
   },
-  transformIgnorePatterns: ['/node_modules(?![\\\\/]vue-awesome[\\\\/])/'],
 }
