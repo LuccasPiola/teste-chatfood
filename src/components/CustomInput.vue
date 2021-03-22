@@ -37,6 +37,11 @@ export default defineComponent({
   border: 2px solid #ebeff4;
   border-radius: 7px;
   padding: 18px 16px;
+  max-width: 576px;
+
+  label {
+    width: 100%;
+  }
 
   input {
     margin-left: 11px;

@@ -1,6 +1,6 @@
 <template>
   <div class="dish" @click="() => addItemToBasket(dish.id)">
-    <div class="dish__info" :style="{ width: dish.photo ? '70%' : '100%' }">
+    <div class="dish__info" :class="{ 'dish__info--more-width': dish?.photo }">
       <h3>{{ dish.name }}</h3>
       <p>{{ dish.description }}</p>
       <div>
@@ -98,8 +98,10 @@ export default defineComponent({
   align-items: center;
   padding: 21px 0;
   transition: all 0.2s ease-in;
+  cursor: pointer;
 
   &__info {
+    width: 65%;
     h3 {
       color: #071c4d;
       font-weight: 600;
@@ -127,15 +129,108 @@ export default defineComponent({
         text-decoration: line-through;
       }
     }
+
+    &--more-width {
+      width: 100%;
+    }
+
+    @include md {
+      width: 80%;
+      h3 {
+        font-size: 18px;
+        margin-bottom: 14px;
+      }
+
+      p {
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      div {
+        strong {
+          font-size: 14px;
+        }
+
+        h4 {
+          font-size: 14px;
+        }
+      }
+    }
+
+    @include lg {
+      width: 85%;
+      h3 {
+        font-size: 18px;
+        margin-bottom: 14px;
+      }
+
+      p {
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      div {
+        strong {
+          font-size: 14px;
+        }
+
+        h4 {
+          font-size: 14px;
+        }
+      }
+    }
+
+    @include xl {
+      width: 85%;
+      h3 {
+        font-size: 24px;
+        margin-bottom: 14px;
+      }
+
+      p {
+        font-size: 16px;
+        margin-bottom: 14px;
+      }
+
+      div {
+        strong {
+          font-size: 18px;
+        }
+
+        h4 {
+          font-size: 18px;
+        }
+      }
+    }
   }
   &__photo {
-    width: 30%;
-    height: 91px;
+    width: 35%;
+    height: 70px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     border-radius: 7px;
     margin-left: 14px;
+
+    @include sm {
+      width: 25%;
+      height: 130px;
+    }
+
+    @include md {
+      width: 20%;
+      height: 130px;
+    }
+
+    @include lg {
+      width: 15%;
+      height: 130px;
+    }
+
+    @include xl {
+      width: 15%;
+      height: 150px;
+    }
   }
 
   & + .dish {

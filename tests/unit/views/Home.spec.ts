@@ -8,7 +8,7 @@ jest.mock('@/services/api/menu/methods', () => {
   return {
     getMenu: jest.fn(() => ({ data: menu })),
   }
-})
+}) // Mocking the getMenu function from services to simulate error Throw
 let wrapper: VueWrapper<any>
 
 const factory = () => {
@@ -16,7 +16,7 @@ const factory = () => {
     global: {
       plugins: [store],
       stubs: ['font-awesome-icon'],
-      renderStubDefaultSlot: true,
+      renderStubDefaultSlot: true, // Render what's inside of each stube
     },
   })
 }
@@ -27,13 +27,16 @@ describe('Home tests', () => {
     await store.dispatch('menu/reset')
     wrapper = factory()
   })
+
   it('should be visible when mounted', () => {
     expect(wrapper).toBeDefined()
   })
+
   it('should show items when API returns', async () => {
     await store.dispatch('menu/fetchMenu')
     expect(wrapper.find('.menu').exists()).toBe(true)
   })
+
   it('should filter items accordingly with input value', async () => {
     await store.dispatch('menu/fetchMenu')
     const input = wrapper.find('input')
@@ -42,16 +45,19 @@ describe('Home tests', () => {
     await input.setValue('')
     expect(wrapper.findAll('.dish')).toHaveLength(12)
   })
+
   it('should show error when API fails', async () => {
     await store.commit('menu/SET_ERROR')
     expect(wrapper.find('.menu__error').exists()).toBe(true)
   })
+
   it('should be able to commit error when API fails', async () => {
-    const mockedMenuApi = menuAPI as jest.Mocked<typeof menuAPI>
-    mockedMenuApi.getMenu.mockImplementationOnce(() => Promise.reject())
+    const mockedMenuApi = menuAPI as jest.Mocked<typeof menuAPI> // Necessary because of Typescript strong types
+    mockedMenuApi.getMenu.mockImplementationOnce(() => Promise.reject()) // Forcing a reject from API
     await store.dispatch('menu/fetchMenu')
     expect(mockedMenuApi.getMenu).toHaveBeenCalled()
   })
+
   it('should show loading when API is loading', async () => {
     await store.commit('menu/SET_LOADING')
     expect(wrapper.find('.menu__loading').exists()).toBe(true)

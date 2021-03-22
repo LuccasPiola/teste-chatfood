@@ -114,13 +114,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .menu {
   padding: 0 25px 60px;
-  margin-top: 28px;
+  max-width: 1200px;
+  margin: 28px auto 0;
 
   h1 {
     font-size: 26px;
     margin-bottom: 28px;
   }
-
   h2 {
     font-size: 26px;
     color: #071c4d;
@@ -141,6 +141,30 @@ export default defineComponent({
   &__loading {
     margin-top: 28px !important;
     font-size: 20px !important;
+  }
+
+  @include lg {
+    h1 {
+      font-size: 30px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-size: 30px;
+      margin: 21px 0 0;
+    }
+  }
+
+  @include xl {
+    h1 {
+      font-size: 36px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-size: 45px;
+      margin: 21px 0 0;
+    }
   }
 }
 </style>

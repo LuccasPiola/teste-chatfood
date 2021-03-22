@@ -1,4 +1,4 @@
-import 'jest-localstorage-mock'
+import 'jest-localstorage-mock' // Lib necessary to test localStorage features
 import { shallowMount, VueWrapper } from '@vue/test-utils'
 import Dish from '@/components/Dish.vue'
 import dishes from '@/mocks/dishes.json'
@@ -13,18 +13,19 @@ const factory = () => {
     },
   })
 }
-beforeEach(() => {
-  wrapper = factory()
-  localStorage.clear()
-})
 
 describe('Dish tests', () => {
+  beforeEach(() => {
+    wrapper = factory()
+    localStorage.clear()
+  })
+
   it('should be visible when mounted', () => {
     expect(wrapper).toBeDefined()
   })
   it('should show formatted price with discount', () => {
     const formattedPrice = wrapper.find('strong')
-    expect(formattedPrice.text()).toEqual('AED 90')
+    expect(formattedPrice.text()).toEqual('AED 90') // This non default white space comes from default Intl.NumberFormat format method
   })
   it('should show formatted price without discount', () => {
     const anotherWrapper = shallowMount(Dish, {
@@ -61,7 +62,9 @@ describe('Dish tests', () => {
     expect(localStorage.__STORE__).toEqual({
       '@chatfood/basket': '[{"id":"1","quantity":2}]',
     })
-    expect(window.alert).toHaveBeenCalled()
+    expect(window.alert).toHaveBeenCalledWith(
+      'You ordered the max permitted quantity for this item',
+    )
   })
 
   it('should not add item in basket when it does not have stock', async () => {
