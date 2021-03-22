@@ -85,8 +85,8 @@ Para análise e ver funcionando diretamente na máquina local:
 
 1. Clone este repositório utilizando o comando <code> git clone https://github.com/LuccasPiola/teste-chatfood.git </code>
 2. Entre na pasta clonada utilizando <code>cd teste-chatfood</code>
-3. Rode o comando <code>yarn</code> no terminal, para a instalação das dependências
-   3.1 Caso você não tenha o yarn como gerenciador de dependências, rode  comando <code>npm install --global yarn</code>
+3. Rode o comando <code>yarn</code> no terminal, para a instalação das dependências </br />
+   3.1 Caso você não tenha o yarn como gerenciador de dependências, rode  comando <code>npm install --global yarn</code> <br />
     3.1.1 Caso você também não tenha o npm como gerenciador de dependências, consulte a [documentação oficial](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 4. Rode o comando <code>yarn serve</code> no terminal
 5. Abra uma aba no seu navegador e digite <code>http://localhost:8080 </code>
